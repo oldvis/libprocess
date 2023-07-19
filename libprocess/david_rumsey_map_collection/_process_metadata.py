@@ -1,5 +1,5 @@
 """
-Process rawMetadata.jsonl and output metadata.json.
+Process metadata.
 
 TODO: check if the following data attributes can be used
 - sourceData:
@@ -111,11 +111,11 @@ def get_abstract(field_values: List[Dict]) -> Union[str, None]:
     return note.replace("\u200b", "").replace("\u00a0", " ")
 
 
-def postprocess(
+def process(
     entry: MetadataEntry, img_dir: Union[str, None]
 ) -> BaseProcessedMetadataEntry:
     """
-    Postprocess a raw metadata entry.
+    Postprocess a metadata entry.
     If img directory is not provided, do not compute the image attributes.
     """
 
@@ -173,22 +173,21 @@ def postprocess(
     }
 
 
-def postprocess_batch(
-    raw_metadata_path: str, img_dir: Union[str, None]
+def process_batch(
+    metadata_path: str, img_dir: Union[str, None]
 ) -> List[BaseProcessedMetadataEntry]:
     """
-    Postprocess a batch of raw metadata entries.
+    Process a batch of metadata entries.
     """
 
-    raw_metadata = load_jl(raw_metadata_path)
-    metadata = [
-        postprocess(d, img_dir)
-        for d in tqdm(raw_metadata, desc="Process Metadata Progress")
+    metadata = load_jl(metadata_path)
+    processed_metadata = [
+        process(d, img_dir) for d in tqdm(metadata, desc="Process Metadata Progress")
     ]
 
     if img_dir is None:
-        return metadata
+        return processed_metadata
     # Ignore the entries where the phash computation failed,
-    # meaning that the corresponding image has not been crawled
-    # or the crawled image is corrupted.
-    return [d for d in metadata if d["phash"] is not None]
+    # meaning that the corresponding image has not been fetched
+    # or the fetched image is corrupted.
+    return [d for d in processed_metadata if d["phash"] is not None]

@@ -40,7 +40,7 @@ class BaseProcessedMetadataEntry(TypedDict):
     uuid : str
         The UUID of the metadata entry.
         This UUID can be used to associate the processed metadata entry
-        with the corresponding raw metadata entry.
+        with the corresponding metadata entry.
     authors : Union[List[str], None]
         The authors of the visualization.
         Store None if unknown.

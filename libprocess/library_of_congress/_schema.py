@@ -1,5 +1,5 @@
 """
-Schema declarations used for validating the data structure of raw metadata.
+Schema declarations used for validating the data structure of metadata.
 """
 
 schema_item = {

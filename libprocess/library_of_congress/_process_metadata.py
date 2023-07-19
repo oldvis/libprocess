@@ -1,5 +1,5 @@
 """
-Process rawMetadata.jsonl and output metadata.json.
+Process metadata.
 
 TODO: check if the following data attributes can be used
 - SourceData
@@ -41,8 +41,6 @@ TODO: check if the following data attributes can be used
         - modified, resource_links, sort_date,
         - source_created, source_modified, subject_headings
 """
-
-# pylint: disable=invalid-name
 
 import re
 import textwrap
@@ -231,11 +229,11 @@ def get_rights(source_data: SourceData) -> str:
     return clean_rights(rights[0])
 
 
-def postprocess(
+def process(
     entry: MetadataEntry, img_dir: Union[str, None]
 ) -> BaseProcessedMetadataEntry:
     """
-    Postprocess a raw metadata entry.
+    Postprocess a metadata entry.
     If img directory is not provided, do not compute the image attributes.
     """
 
@@ -275,24 +273,23 @@ def postprocess(
     }
 
 
-def postprocess_batch(
-    raw_metadata_path: str, img_dir: Union[str, None]
+def process_batch(
+    metadata_path: str, img_dir: Union[str, None]
 ) -> List[BaseProcessedMetadataEntry]:
     """
-    Postprocess a batch of raw metadata entries.
+    Postprocess a batch of metadata entries.
     """
 
-    raw_metadata = load_jl(raw_metadata_path)
-    metadata = [
-        postprocess(d, img_dir)
-        for d in tqdm(raw_metadata, desc="Process Metadata Progress")
+    metadata = load_jl(metadata_path)
+    processed_metadata = [
+        process(d, img_dir) for d in tqdm(metadata, desc="Process Metadata Progress")
     ]
 
     if img_dir is None:
-        return metadata
+        return processed_metadata
     # Ignore the entries where the phash computation failed,
-    # meaning that the corresponding image has not been crawled
-    # or the crawled image is corrupted.
-    metadata = [d for d in metadata if d["phash"] is not None]
-    metadata = {d["uuid"]: d for d in metadata}
-    return [*metadata.values()]
+    # meaning that the corresponding image has not been fetched
+    # or the fetched image is corrupted.
+    processed_metadata = [d for d in processed_metadata if d["phash"] is not None]
+    processed_metadata = {d["uuid"]: d for d in processed_metadata}
+    return [*processed_metadata.values()]

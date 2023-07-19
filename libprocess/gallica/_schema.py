@@ -1,5 +1,5 @@
 """
-Schema declarations used for validating the data structure of raw metadata.
+Schema declarations used for validating the data structure of metadata.
 
 Reference: https://api.bnf.fr/api-gallica-de-recherche
 """

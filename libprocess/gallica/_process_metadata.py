@@ -1,5 +1,5 @@
 """
-Process rawMetadata.jsonl and output metadata.json.
+Process metadata.
 
 TODO: check if the following data attributes can be used
 - Record
@@ -245,15 +245,15 @@ def get_image_size(record: Record) -> Union[Dict, None]:
     return None
 
 
-def postprocess(
+def process(
     entry: MetadataEntry, img_dir: Union[str, None]
 ) -> List[BaseProcessedMetadataEntry]:
     """
-    Postprocess a raw metadata entry.
-    Create a list of metadata entries from the raw metadata entry.
+    Postprocess a metadata entry.
+    Create a list of metadata entries from the metadata entry.
     If img directory is not provided, do not compute the image attributes.
 
-    Each raw metadata entry stored in Gallica contains a list of images.
+    Each metadata entry stored in Gallica contains a list of images.
     """
 
     metadata_entries = []
@@ -319,23 +319,23 @@ def postprocess(
     return metadata_entries
 
 
-def postprocess_batch(
-    raw_metadata_path: str, img_dir: Union[str, None]
+def process_batch(
+    metadata_path: str, img_dir: Union[str, None]
 ) -> List[BaseProcessedMetadataEntry]:
     """
-    Postprocess a batch of raw metadata entries.
+    Postprocess a batch of metadata entries.
     """
 
-    raw_metadata = load_jl(raw_metadata_path)
-    metadata = []
-    for d in tqdm(raw_metadata, desc="Process Metadata Progress"):
+    metadata = load_jl(metadata_path)
+    processed_metadata = []
+    for d in tqdm(metadata, desc="Process Metadata Progress"):
         if "pages" not in d["sourceData"]:
             continue
-        metadata += postprocess(d, img_dir)
+        processed_metadata += process(d, img_dir)
 
     if img_dir is None:
-        return metadata
+        return processed_metadata
     # Ignore the entries where the phash computation failed,
-    # meaning that the corresponding image has not been crawled
-    # or the crawled image is corrupted.
-    return [d for d in metadata if d["phash"] is not None]
+    # meaning that the corresponding image has not been fetched
+    # or the fetched image is corrupted.
+    return [d for d in processed_metadata if d["phash"] is not None]
