@@ -1,1 +1,0 @@
-import{_ as s,o as a,c as n,V as l}from"./chunks/framework.ff7f77a0.js";const A=JSON.parse('{"title":"Gallica","description":"","frontmatter":{},"headers":[],"relativePath":"api/gallica.md","filePath":"api/gallica.md"}'),p={name:"api/gallica.md"},o=l("",19),e=[o];function t(c,r,y,C,i,D){return a(),n("div",null,e)}const d=s(p,[["render",t]]);export{A as __pageData,d as default};
