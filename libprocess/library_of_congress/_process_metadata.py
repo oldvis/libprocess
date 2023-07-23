@@ -286,7 +286,7 @@ def process_batch(
     processed_metadata = [
         process(d, img_dir)
         for d in tqdm(metadata, desc="Process Metadata Progress")
-        if (uuids is None) or (d['uuid'] in uuids)
+        if (uuids is None) or (d["uuid"] in uuids)
     ]
 
     if img_dir is None:

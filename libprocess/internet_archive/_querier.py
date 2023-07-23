@@ -24,7 +24,10 @@ class InternetArchive(_InternetArchive):
         validate(instance=metadata, schema=schema_metadata)
 
     def process_metadata(
-        self, save_path: str, use_img: bool = False, uuids: Union[List[str], None] = None
+        self,
+        save_path: str,
+        use_img: bool = False,
+        uuids: Union[List[str], None] = None,
     ) -> None:
         """
         Args
@@ -49,6 +52,6 @@ class InternetArchive(_InternetArchive):
             img_dir,
             uuids,
         )
-        
+
         with open(save_path, "w", encoding="utf-8") as f:
             f.write(json.dumps(metadata, indent=4, ensure_ascii=False))

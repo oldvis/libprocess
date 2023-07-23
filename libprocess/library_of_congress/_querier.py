@@ -24,7 +24,10 @@ class LibraryOfCongress(_LibraryOfCongress):
         validate(instance=metadata, schema=schema_metadata)
 
     def process_metadata(
-        self, save_path: str, use_img: bool = False, uuids: Union[List[str], None] = None
+        self,
+        save_path: str,
+        use_img: bool = False,
+        uuids: Union[List[str], None] = None,
     ) -> None:
         """
         Args
