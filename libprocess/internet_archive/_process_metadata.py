@@ -218,10 +218,10 @@ def process(
             page_index = int(image_filename.split(".")[0].split("_")[-1])
 
             if img_dir is None:
-                image_attributes = {}
+                image_properties = {}
             else:
                 image_path = f"{img_dir}/{uuid2filename[uuid]}"
-                image_attributes = {
+                image_properties = {
                     "md5": get_md5_by_path(image_path),
                     "phash": get_phash_by_path(image_path),
                     "resolution": get_shape_by_path(image_path),
@@ -239,16 +239,16 @@ def process(
                     "downloadUrl": get_download_url_for_image_in_zip(
                         filename, image_filename, source_data
                     ),
-                    **image_attributes,
+                    **image_properties,
                 }
             )
         return entries
     else:
         if img_dir is None:
-            image_attributes = {}
+            image_properties = {}
         else:
             image_path = f"{download_dir}/{identifier}/{filename}"
-            image_attributes = {
+            image_properties = {
                 "md5": get_md5_by_path(image_path),
                 "phash": get_phash_by_path(image_path),
                 "resolution": get_shape_by_path(image_path),
@@ -262,7 +262,7 @@ def process(
                 "displayName": source_data["metadata"]["title"],
                 "viewUrl": f"https://archive.org/details/{identifier}",
                 "downloadUrl": f"https://archive.org/download/{identifier}/{filename}",
-                **image_attributes,
+                **image_properties,
             }
         ]
 

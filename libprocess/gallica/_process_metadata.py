@@ -288,7 +288,7 @@ def process(
         view_url = get_view_url(page, entry)
         download_url = get_image_url(page, entry)
 
-        image_attributes = (
+        image_properties = (
             {}
             if img_dir is None
             else {
@@ -307,7 +307,7 @@ def process(
                 "publishDate": publish_date,
                 "viewUrl": view_url,
                 "downloadUrl": download_url,
-                **image_attributes,
+                **image_properties,
                 "languages": languages,
                 "tags": tags,
                 "abstract": abstract,

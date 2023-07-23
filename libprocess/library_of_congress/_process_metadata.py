@@ -240,7 +240,7 @@ def process(
     source_data = entry["sourceData"]
     item = source_data["item"]
 
-    image_attributes = (
+    image_properties = (
         {}
         if img_dir is None
         else {
@@ -260,7 +260,7 @@ def process(
         # Note: the image_url stores URLs of the image with different resolution.
         # The last entry of the image_url gives the highest resolution.
         "downloadUrl": source_data["image_url"][-1],
-        **image_attributes,
+        **image_properties,
         "languages": get_languages(source_data),
         "tags": get_tags(source_data),
         "abstract": get_abstract(source_data),
