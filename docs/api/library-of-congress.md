@@ -45,17 +45,8 @@ querier.fetch_image()
 Process metadata:
 
 ```python
-processed_metadata_path = f"{directory}/processed-metadata/processedMetadata.json"
-querier.process_metadata(path=processed_metadata_path)
-```
-
-Process metadata (fast):
-
-```python
-processed_trimmed_metadata_path = (
-    f"{directory}/processed-metadata/processedTrimmedMetadata.json"
-)
-querier.process_metadata_fast(path=processed_trimmed_metadata_path)
+processed_metadata_path = f"{directory}/metadata-processed/metadataProcessed.json"
+querier.process_metadata(save_path=processed_metadata_path)
 ```
 
 ## Processed Metadata Schema

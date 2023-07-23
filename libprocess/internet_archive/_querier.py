@@ -4,7 +4,7 @@ The entrance to querier class.
 
 import json
 import os
-from typing import Union
+from typing import List, Union
 
 from jsonschema import validate
 from libquery import InternetArchive as _InternetArchive
@@ -12,25 +12,6 @@ from libquery.utils.jsonl import load_jl
 
 from ._process_metadata import process_batch
 from ._schema import schema_metadata
-
-
-def process_metadata(
-    metadata_path: str,
-    download_dir: str,
-    img_dir: Union[str, None],
-    processed_metadata_path: str,
-) -> None:
-    output_dir = os.path.dirname(processed_metadata_path)
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
-    metadata = process_batch(
-        metadata_path,
-        download_dir,
-        img_dir,
-    )
-    with open(processed_metadata_path, "w", encoding="utf-8") as f:
-        f.write(json.dumps(metadata, indent=4, ensure_ascii=False))
 
 
 class InternetArchive(_InternetArchive):
@@ -42,18 +23,32 @@ class InternetArchive(_InternetArchive):
         metadata = load_jl(self.metadata_path)
         validate(instance=metadata, schema=schema_metadata)
 
-    def process_metadata(self, path: str) -> None:
-        process_metadata(
-            self.metadata_path,
-            self.download_dir,
-            self.img_dir,
-            path,
-        )
+    def process_metadata(
+        self, save_path: str, use_img: bool = False, uuids: Union[List[str], None] = None
+    ) -> None:
+        """
+        Args
+        ----
+        save_path : str
+            The path to save the processing metadata file.
+        use_img : bool
+            Whether to use image to compute metadata.
+        uuids : Union[List[str], None]
+            The uuids of entries whose metadata are to be processed.
+            If uuids = None, all the entries will be processed.
+        """
 
-    def process_metadata_fast(self, path: str) -> None:
-        process_metadata(
+        output_dir = os.path.dirname(save_path)
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+        img_dir = self.img_dir if use_img else None
+        metadata = process_batch(
             self.metadata_path,
             self.download_dir,
-            None,
-            path,
+            img_dir,
+            uuids,
         )
+        
+        with open(save_path, "w", encoding="utf-8") as f:
+            f.write(json.dumps(metadata, indent=4, ensure_ascii=False))

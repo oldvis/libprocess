@@ -23,7 +23,7 @@ querier.fetch_metadata(
         "https://www.davidrumsey.com/luna/servlet/as/search?q=type=chart",
     ]
 )
-querier.process_metadata_fast(path="processedMetadata.json")
+querier.process_metadata(path="processedMetadata.json", img_dir=None)
 ```
 
 More examples can be found in the API Reference.

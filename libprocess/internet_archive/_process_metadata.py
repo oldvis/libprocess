@@ -165,7 +165,10 @@ def filename2uuid(filename: str) -> str:
 
 
 def process(
-    entry: MetadataEntry, download_dir: str, img_dir: Union[str, None]
+    entry: MetadataEntry,
+    download_dir: str,
+    img_dir: Union[str, None],
+    uuids: Union[List[str], None] = None,
 ) -> List[BaseProcessedMetadataEntry]:
     """
     Postprocess a metadata entry.
@@ -213,6 +216,8 @@ def process(
         uuid2filename = {filename2uuid(d): d for d in os.listdir(img_dir)}
         for image_filename in image_filenames:
             uuid = get_image_uuid(image_filename, entry["source"])
+            if (uuids is not None) and (uuid not in uuids):
+                continue
             if (img_dir is not None) and (uuid not in uuid2filename):
                 continue
             page_index = int(image_filename.split(".")[0].split("_")[-1])
@@ -244,6 +249,10 @@ def process(
             )
         return entries
     else:
+        uuid = get_image_uuid(filename, entry["source"])
+        if (uuids is not None) and (uuid not in uuids):
+            return []
+
         if img_dir is None:
             image_properties = {}
         else:
@@ -258,7 +267,7 @@ def process(
         return [
             {
                 **partial_entry,
-                "uuid": get_image_uuid(filename, entry["source"]),
+                "uuid": uuid,
                 "displayName": source_data["metadata"]["title"],
                 "viewUrl": f"https://archive.org/details/{identifier}",
                 "downloadUrl": f"https://archive.org/download/{identifier}/{filename}",
@@ -268,7 +277,10 @@ def process(
 
 
 def process_batch(
-    metadata_path: str, download_dir: str, img_dir: Union[str, None]
+    metadata_path: str,
+    download_dir: str,
+    img_dir: Union[str, None],
+    uuids: Union[List[str], None] = None,
 ) -> List[BaseProcessedMetadataEntry]:
     """
     Postprocess a batch of metadata entries.
@@ -277,7 +289,7 @@ def process_batch(
     metadata = load_jl(metadata_path)
     processed_metadata = []
     for d in tqdm(metadata, desc="Process Metadata Progress"):
-        processed_metadata += process(d, download_dir, img_dir)
+        processed_metadata += process(d, download_dir, img_dir, uuids)
 
     if img_dir is None:
         return processed_metadata

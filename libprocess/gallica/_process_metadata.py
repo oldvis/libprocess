@@ -246,7 +246,9 @@ def get_image_size(record: Record) -> Union[Dict, None]:
 
 
 def process(
-    entry: MetadataEntry, img_dir: Union[str, None]
+    entry: MetadataEntry,
+    img_dir: Union[str, None],
+    uuids: Union[List[str], None] = None,
 ) -> List[BaseProcessedMetadataEntry]:
     """
     Postprocess a metadata entry.
@@ -288,6 +290,9 @@ def process(
         view_url = get_view_url(page, entry)
         download_url = get_image_url(page, entry)
 
+        if (uuids is not None) and (uuid not in uuids):
+            continue
+
         image_properties = (
             {}
             if img_dir is None
@@ -313,14 +318,16 @@ def process(
                 "abstract": abstract,
                 "rights": get_rights(record),
                 "source": source,
-                # 'imageSize': image_size,
+                # "imageSize": image_size,
             }
         )
     return metadata_entries
 
 
 def process_batch(
-    metadata_path: str, img_dir: Union[str, None]
+    metadata_path: str,
+    img_dir: Union[str, None],
+    uuids: Union[List[str], None] = None,
 ) -> List[BaseProcessedMetadataEntry]:
     """
     Postprocess a batch of metadata entries.
@@ -331,7 +338,7 @@ def process_batch(
     for d in tqdm(metadata, desc="Process Metadata Progress"):
         if "pages" not in d["sourceData"]:
             continue
-        processed_metadata += process(d, img_dir)
+        processed_metadata += process(d, img_dir, uuids)
 
     if img_dir is None:
         return processed_metadata
