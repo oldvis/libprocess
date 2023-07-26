@@ -55,7 +55,7 @@ from libquery.library_of_congress._typing import (
 from libquery.utils.jsonl import load_jl
 from tqdm import tqdm
 
-from ..typing import BaseProcessedMetadataEntry, TimePoint
+from ..typing import ProcessedMetadataEntry, TimePoint
 from .._utils.image import (
     get_md5_by_uuid,
     get_phash_by_uuid,
@@ -229,16 +229,13 @@ def get_rights(source_data: SourceData) -> str:
     return clean_rights(rights[0])
 
 
-def process(
-    entry: MetadataEntry, img_dir: Union[str, None]
-) -> BaseProcessedMetadataEntry:
+def process(entry: MetadataEntry, img_dir: Union[str, None]) -> ProcessedMetadataEntry:
     """
-    Postprocess a metadata entry.
+    Process a metadata entry.
     If img directory is not provided, do not compute the image attributes.
     """
 
     source_data = entry["sourceData"]
-    item = source_data["item"]
 
     image_properties = (
         {}
@@ -253,7 +250,7 @@ def process(
 
     return {
         "uuid": entry["uuid"],
-        "authors": item.get("contributors", None),
+        "authors": source_data["item"].get("contributors", None),
         "displayName": source_data["title"],
         "publishDate": get_publish_date(source_data),
         "viewUrl": source_data["url"],
@@ -277,9 +274,9 @@ def process_batch(
     metadata_path: str,
     img_dir: Union[str, None],
     uuids: Union[List[str], None] = None,
-) -> List[BaseProcessedMetadataEntry]:
+) -> List[ProcessedMetadataEntry]:
     """
-    Postprocess a batch of metadata entries.
+    Process a batch of metadata entries.
     """
 
     metadata = load_jl(metadata_path)

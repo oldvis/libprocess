@@ -31,7 +31,7 @@ class Source(TypedDict):
     accessDate: str
 
 
-class BaseProcessedMetadataEntry(TypedDict):
+class ProcessedMetadataEntry(TypedDict):
     """
     The data structure of an entry of processed metadata.
 
@@ -58,13 +58,13 @@ class BaseProcessedMetadataEntry(TypedDict):
         DownloadUrl can serve the purpose of viewUrl,
         while viewUrl may not always be the same as downloadUrl,
         because some data sources provide web-based viewing functions.
-    md5 : str
+    md5 : NotRequired[str]
         The MD5 hash of the image.
-    phash : str
+    phash : NotRequired[str]
         The perceptual hash of the visualization image.
-    resolution : Tuple[int, int]
+    resolution : NotRequired[Tuple[int, int]]
         The (width, height) of the image in pixels.
-    fileSize: int
+    fileSize: NotRequired[int]
         The storage size of the image in bytes.
     languages : Union[List[str], None]
         The languages used in the visualization.
@@ -88,30 +88,12 @@ class BaseProcessedMetadataEntry(TypedDict):
     publishDate: Union[TimePoint, List[TimePoint], None]
     viewUrl: str
     downloadUrl: str
+    md5: NotRequired[str]
+    phash: NotRequired[str]
+    resolution: NotRequired[Tuple[int, int]]
+    fileSize: NotRequired[int]
     languages: Union[List[str], None]
     tags: List[str]
     abstract: Union[str, None]
     rights: str
     source: Source
-
-
-class ProcessedMetadataEntry(BaseProcessedMetadataEntry):
-    """
-    The data structure of an entry of processed metadata.
-
-    Attributes
-    ----------
-    md5 : str
-        The MD5 hash of the image.
-    phash : str
-        The perceptual hash of the visualization image.
-    resolution : Tuple[int, int]
-        The (width, height) of the image in pixels.
-    fileSize: int
-        The storage size of the image in bytes.
-    """
-
-    md5: str
-    phash: str
-    resolution: Tuple[int, int]
-    fileSize: int

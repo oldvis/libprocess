@@ -44,8 +44,7 @@ querier.fetch_image()
 Process metadata:
 
 ```python
-processed_metadata_path = f"{directory}/metadata-processed/metadataProcessed.json"
-querier.process_metadata(save_path=processed_metadata_path)
+querier.process_metadata(save_path=f"{directory}/processed/processed.json")
 ```
 
 ## Processed Metadata Schema

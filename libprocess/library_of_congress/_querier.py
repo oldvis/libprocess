@@ -46,7 +46,7 @@ class LibraryOfCongress(_LibraryOfCongress):
             os.makedirs(output_dir)
 
         img_dir = self.img_dir if use_img else None
-        metadata = process_batch(self.metadata_path, img_dir, uuids)
+        processed_metadata = process_batch(self.metadata_path, img_dir, uuids)
 
         with open(save_path, "w", encoding="utf-8") as f:
-            f.write(json.dumps(metadata, indent=4, ensure_ascii=False))
+            f.write(json.dumps(processed_metadata, indent=4, ensure_ascii=False))

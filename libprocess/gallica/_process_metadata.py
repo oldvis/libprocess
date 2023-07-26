@@ -16,16 +16,16 @@ TODO: check if the following data attributes can be used
 import re
 from typing import Any, Dict, List, Union
 
-from tqdm import tqdm
 from libquery.gallica._typing import (
     MetadataEntry,
     Page,
     Record,
 )
 from libquery.utils.jsonl import load_jl
+from tqdm import tqdm
 
 from ..typing import (
-    BaseProcessedMetadataEntry,
+    ProcessedMetadataEntry,
     TimePoint,
 )
 from .._utils.image import (
@@ -249,9 +249,9 @@ def process(
     entry: MetadataEntry,
     img_dir: Union[str, None],
     uuids: Union[List[str], None] = None,
-) -> List[BaseProcessedMetadataEntry]:
+) -> List[ProcessedMetadataEntry]:
     """
-    Postprocess a metadata entry.
+    Process a metadata entry.
     Create a list of metadata entries from the metadata entry.
     If img directory is not provided, do not compute the image attributes.
 
@@ -328,9 +328,9 @@ def process_batch(
     metadata_path: str,
     img_dir: Union[str, None],
     uuids: Union[List[str], None] = None,
-) -> List[BaseProcessedMetadataEntry]:
+) -> List[ProcessedMetadataEntry]:
     """
-    Postprocess a batch of metadata entries.
+    Process a batch of metadata entries.
     """
 
     metadata = load_jl(metadata_path)

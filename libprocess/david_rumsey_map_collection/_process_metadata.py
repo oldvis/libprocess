@@ -33,7 +33,7 @@ from libquery.david_rumsey_map_collection._typing import (
 from libquery.utils.jsonl import load_jl
 from tqdm import tqdm
 
-from ..typing import BaseProcessedMetadataEntry
+from ..typing import ProcessedMetadataEntry
 from .._utils.image import (
     get_md5_by_uuid,
     get_phash_by_uuid,
@@ -111,18 +111,13 @@ def get_abstract(field_values: List[Dict]) -> Union[str, None]:
     return note.replace("\u200b", "").replace("\u00a0", " ")
 
 
-def process(
-    entry: MetadataEntry, img_dir: Union[str, None]
-) -> BaseProcessedMetadataEntry:
+def process(entry: MetadataEntry, img_dir: Union[str, None]) -> ProcessedMetadataEntry:
     """
-    Postprocess a metadata entry.
+    Process a metadata entry.
     If img directory is not provided, do not compute the image attributes.
     """
 
-    id_in_source = entry["idInSource"]
     source_data = entry["sourceData"]
-
-    source_data_id = source_data["id"]
     field_values = source_data["fieldValues"]
 
     # store size4 if exist and size2 otherwise
@@ -132,7 +127,7 @@ def process(
         else source_data["urlSize2"]
     )
 
-    image_attributes = (
+    image_properties = (
         {}
         if img_dir is None
         else {
@@ -150,9 +145,9 @@ def process(
         "publishDate": {
             "year": int(get_first_element(get_attr(field_values, "Pub Date"))),
         },
-        "viewUrl": f"https://www.davidrumsey.com/luna/servlet/detail/{source_data_id}",
+        "viewUrl": f"https://www.davidrumsey.com/luna/servlet/detail/{source_data['id']}",
         "downloadUrl": download_url,
-        **image_attributes,
+        **image_properties,
         "languages": get_languages(field_values),
         "tags": get_tags(field_values),
         # Note: all the entries have either no note (stored as None) or 1 note
@@ -162,7 +157,7 @@ def process(
         "source": {
             "name": entry["source"],
             # Note: do not use entry['url'], which is not a stable link
-            "url": f"https://www.davidrumsey.com/luna/servlet/as/search?mid={id_in_source}",
+            "url": f"https://www.davidrumsey.com/luna/servlet/as/search?mid={entry['idInSource']}",
             "accessDate": entry["accessDate"],
         },
         # Deprecated properties:
@@ -177,7 +172,7 @@ def process_batch(
     metadata_path: str,
     img_dir: Union[str, None],
     uuids: Union[List[str], None] = None,
-) -> List[BaseProcessedMetadataEntry]:
+) -> List[ProcessedMetadataEntry]:
     """
     Process a batch of metadata entries.
     """

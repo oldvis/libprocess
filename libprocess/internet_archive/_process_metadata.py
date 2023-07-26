@@ -26,7 +26,7 @@ from tqdm import tqdm
 from zipfile import ZipFile
 
 from ..typing import (
-    BaseProcessedMetadataEntry,
+    ProcessedMetadataEntry,
     TimePoint,
 )
 from .._utils.image import (
@@ -169,9 +169,9 @@ def process(
     download_dir: str,
     img_dir: Union[str, None],
     uuids: Union[List[str], None] = None,
-) -> List[BaseProcessedMetadataEntry]:
+) -> List[ProcessedMetadataEntry]:
     """
-    Postprocess a metadata entry.
+    Process a metadata entry.
     If img directory is not provided, do not compute the image attributes.
     """
 
@@ -281,9 +281,9 @@ def process_batch(
     download_dir: str,
     img_dir: Union[str, None],
     uuids: Union[List[str], None] = None,
-) -> List[BaseProcessedMetadataEntry]:
+) -> List[ProcessedMetadataEntry]:
     """
-    Postprocess a batch of metadata entries.
+    Process a batch of metadata entries.
     """
 
     metadata = load_jl(metadata_path)
