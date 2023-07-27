@@ -58,7 +58,7 @@ interface TimePoint {
     day?: number
 }
 
-interface MetadataEntry {
+interface ProcessedMetadataEntry {
     uuid: string
     /** Null when API returns no author attribute. */
     authors: string[] | null
@@ -66,8 +66,10 @@ interface MetadataEntry {
     publishDate: TimePoint[] | TimePoint
     viewUrl: string
     downloadUrl: string
-    md5: string
-    phash: string
+    md5?: string
+    phash?: string
+    resolution?: [number, number]
+    fileSize?: number
     languages: string[]
     tags: string[]
     abstract: string | null

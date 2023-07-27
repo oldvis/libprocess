@@ -52,7 +52,7 @@ querier.process_metadata(save_path=f"{directory}/processed/processed.json")
 Each processed metadata entry is stored as:
 
 ```typescript
-interface MetadataEntry {
+interface ProcessedMetadataEntry {
     uuid: string
     /** Null when LUNA API returns no author attribute. */
     authors: string[] | null
@@ -62,8 +62,10 @@ interface MetadataEntry {
     }
     viewUrl: string
     downloadUrl: string
-    md5: string
-    phash: string
+    md5?: string
+    phash?: string
+    resolution?: [number, number]
+    fileSize?: number
     languages: string[]
     tags: string[]
     abstract: string

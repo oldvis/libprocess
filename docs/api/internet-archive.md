@@ -58,15 +58,17 @@ interface TimePoint {
     day?: number
 }
 
-interface MetadataEntry {
+interface ProcessedMetadataEntry {
     uuid: string
     authors: string[]
     displayName: string
     publishDate: TimePoint | null
     viewUrl: string
     downloadUrl: string
-    md5: string
-    phash: string
+    md5?: string
+    phash?: string
+    resolution?: [number, number]
+    fileSize?: number
     languages: string[] | null
     tags: string[]
     abstract: string
