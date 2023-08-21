@@ -62,6 +62,14 @@ def get_english_attr(record: Record, key: str) -> Union[List[str], None]:
         if isinstance(item, str):
             texts.append(item)
 
+    # In some cases, the attribute value is not available in English.
+    # Example: title of https://gallica.bnf.fr/ark:/12148/btv1b52508907n/f31.item
+    # In these cases, return the attribute value in other languages.
+    if len(texts) == 0:
+        for item in items:
+            if isinstance(item, dict) and "@xml:lang" in item:
+                texts.append(item["#text"])
+
     return texts
 
 
@@ -212,7 +220,8 @@ def get_rights(record: Record) -> str:
 def get_display_name(page: Page, record: Record) -> Union[str, None]:
     if "legend" in page:
         return page["legend"]
-    return get_first_element(get_english_attr(record, "dc:title"))
+    titles = get_english_attr(record, "dc:title")
+    return max(titles, key=len) if titles is not None else None
 
 
 def get_image_size(record: Record) -> Union[Dict, None]:
