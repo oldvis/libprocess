@@ -224,11 +224,11 @@ def get_rights(record: Record) -> str:
 def get_display_name(page: Page, record: Record) -> Union[str, None]:
     if "legend" in page:
         return page["legend"]
-    
+
     titles = get_english_attr(record, "dc:title")
     if titles is None:
         return None
-    
+
     # Return the longest title.
     return max(titles, key=len)
 
