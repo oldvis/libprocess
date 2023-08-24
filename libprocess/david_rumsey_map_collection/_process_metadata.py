@@ -101,7 +101,7 @@ def get_tags(field_values: List[Dict]) -> List[str]:
         "Data Visualization",
     ]
     tags = [d for d in tags if d not in useless_tags]
-    return list(set(tags))
+    return list(dict.fromkeys(tags))
 
 
 def get_abstract(field_values: List[Dict]) -> Union[str, None]:

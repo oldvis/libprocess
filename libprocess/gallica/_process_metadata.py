@@ -118,7 +118,7 @@ def get_authors(record: Record) -> Union[List[str], None]:
     creator = get_english_attr(record, "dc:creator")
     if creator is None:
         return None
-    return list(set(get_english_attr(record, "dc:creator")))
+    return list(dict.fromkeys(creator))
 
 
 def get_publish_date(record: Record) -> Union[TimePoint, None]:
@@ -162,7 +162,7 @@ def get_languages(record: Record) -> List[str]:
     }
     languages = [language_map[d] if d in language_map else d for d in languages]
 
-    return list(set(languages))
+    return list(dict.fromkeys(languages))
 
 
 def get_tags(record: Record) -> List[str]:
@@ -180,7 +180,7 @@ def get_tags(record: Record) -> List[str]:
         "view",
     ]
     tags = [d.title() for d in tags if d not in useless_tags]
-    return list(set(tags))
+    return list(dict.fromkeys(tags))
 
 
 def get_abstract(record: Record) -> Union[str, None]:
@@ -209,7 +209,7 @@ def get_rights(record: Record) -> str:
     if rights is None:
         return "unknown"
 
-    rights = list(set(get_english_attr(record, "dc:rights")))
+    rights = list(dict.fromkeys(rights))
     assert len(rights) == 1, f"Unexpected rights with length != 1: {rights}"
 
     if rights == "public domain":

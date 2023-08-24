@@ -120,7 +120,7 @@ def get_tags(source_data: SourceData) -> List[str]:
         parts = [d.lstrip("* ").rstrip("; ").title() for d in tag.split(";")]
         tags += [d for d in parts if d != "" and not is_name(d)]
 
-    return list(set(tags))
+    return list(dict.fromkeys(tags))
 
 
 def get_languages(source_data: SourceData) -> Union[List[str], None]:

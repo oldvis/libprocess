@@ -144,7 +144,7 @@ def get_languages(source_data: SourceData) -> List[str]:
             parsed += matched
         else:
             parsed.append(d)
-    return [*set(parsed)]
+    return list(dict.fromkeys(parsed))
 
 
 def get_abstract(source_data: SourceData) -> Union[str, None]:
@@ -220,7 +220,7 @@ def get_rights(source_data: SourceData) -> str:
     if "rights_information" in item:
         rights.append(item["rights_information"])
 
-    rights = [*set(rights)]
+    rights = list(dict.fromkeys(rights))
 
     assert len(rights) <= 1, f"Unexpected rights with length > 1: {rights}"
 
