@@ -43,8 +43,12 @@ from ._utils import (
 
 def get_english_attr(record: Record, key: str) -> Union[List[str], None]:
     """
-    Wrap the attribute value into a list and
-    discard the attribute values not stored in English.
+    Get the attribute value in English as a list.
+    If the attribute value is not a list, wrap it as a list with one element.
+    When there is at least one entry in the attribute value stored in English,
+    discard the entries not stored in English.
+    Otherwise, when all the entries in the attribute value are not in English,
+    return all the entries.
     """
 
     if key not in record:
@@ -220,8 +224,13 @@ def get_rights(record: Record) -> str:
 def get_display_name(page: Page, record: Record) -> Union[str, None]:
     if "legend" in page:
         return page["legend"]
+    
     titles = get_english_attr(record, "dc:title")
-    return max(titles, key=len) if titles is not None else None
+    if titles is None:
+        return None
+    
+    # Return the longest title.
+    return max(titles, key=len)
 
 
 def get_image_size(record: Record) -> Union[Dict, None]:
