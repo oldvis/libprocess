@@ -16,6 +16,7 @@ imagehash = "^4.3.1"
 langdetect = "^1.0.9"
 language-data = "^1.1"
 libquery = "^0.1.1"
+black = {extras = ["jupyter"], version = "^23.9.1"}
 
 
 [tool.poetry.group.dev.dependencies]

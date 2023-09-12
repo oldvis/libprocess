@@ -18,6 +18,17 @@ A collection of utility functions to process the query returns from the query fu
 pip install libprocess
 ```
 
+## Usage Example
+
+Query and process metadata in [David Rumsey Map Collection](https://www.davidrumsey.com/):
+
+```python
+from libprocess import DavidRumseyMapCollection
+querier = DavidRumseyMapCollection("./metadata/", "./imgs/")
+querier.fetch_metadata(["https://www.davidrumsey.com/luna/servlet/as/search?q=type=chart"])
+querier.process_metadata(save_path="processedMetadata.json")
+```
+
 ## Documentation
 
 See our [documentation website](https://oldvis.github.io/libprocess/).
