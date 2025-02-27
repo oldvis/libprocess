@@ -7,7 +7,7 @@
 <a href="http://commitizen.github.io/cz-cli/">
     <img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg">
 </a>
-<a href="https://pepy.tech/">
+<a href="https://pepy.tech/projects/libprocess">
     <img alt="Pepy Total Downloads" src="https://img.shields.io/pepy/dt/libprocess">
 </a>
 
